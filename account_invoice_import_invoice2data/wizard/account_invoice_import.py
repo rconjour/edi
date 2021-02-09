@@ -4,6 +4,7 @@
 
 import logging
 import os
+import pkg_resources
 from tempfile import mkstemp
 
 from odoo import _, api, fields, models, tools
@@ -72,6 +73,13 @@ class AccountInvoiceImport(models.TransientModel):
 
     @api.model
     def invoice2data_to_parsed_inv(self, invoice2data_res):
+        lines = invoice2data_res.get('lines', [])
+
+        for line in lines:
+            # Manipulate line data to match with account_invoice_import
+            line['price_unit'] = float(line.get('price_unit', 0))
+            line['qty'] = 1
+
         parsed_inv = {
             "partner": {
                 "vat": invoice2data_res.get("vat"),
@@ -88,6 +96,7 @@ class AccountInvoiceImport(models.TransientModel):
             "date_due": invoice2data_res.get("date_due"),
             "date_start": invoice2data_res.get("date_start"),
             "date_end": invoice2data_res.get("date_end"),
+            'lines': lines,
         }
         for field in ["invoice_number", "description"]:
             if isinstance(invoice2data_res.get(field), list):
