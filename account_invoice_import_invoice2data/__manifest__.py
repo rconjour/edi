@@ -13,8 +13,11 @@
     "website": "https://github.com/OCA/edi",
     "depends": ["account_invoice_import"],
     "external_dependencies": {"python": ["invoice2data"]},
-    "data": ["wizard/account_invoice_import_view.xml",
-        "views/invoice2data_template.xml",],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/res_groups.xml",
+        "views/invoice2data_template.xml",
+        "wizard/account_invoice_import_view.xml", ],
     "demo": ["demo/demo_data.xml"],
     "installable": True,
 }
